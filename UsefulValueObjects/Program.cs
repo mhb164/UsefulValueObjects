@@ -10,9 +10,8 @@ namespace UsefulValueObjects
     {
         static void Main(string[] args)
         {
-            var inc01 = new IranNationalCode("7491254713");
-
-            Console.WriteLine(inc01);
+            Console.WriteLine($"IranNationalCode: {new IranNationalCode("7491254713")}");
+            Console.WriteLine($"MobileNumber: {new MobileNumber("+989123456789")}");
             Console.ReadKey();
         }
     }

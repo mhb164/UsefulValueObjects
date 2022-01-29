@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 public class IranNationalCode
 {
+    public IranNationalCode(long value) : this(value.ToString()) { }
     public IranNationalCode(string value)
     {
         if (value == null)
@@ -15,13 +16,12 @@ public class IranNationalCode
     }
 
     public string Value { get; private set; }
-    public string Formated => Value.Insert(3, "-").Insert(10, "-");
     public long AsNumber => long.Parse(Value);
 
     public const string NationalCodeIsNullMessage = "NationalCode cannot be null.";
     public const string NationalCodeIsEmptyMessage = "NationalCode cannot be empty.";
     public const string NationalCodeLengthErrorMessage = "NationalCode length must be 10.";
-    public const string NationalCodeNotNumberMessage = "NationalCode length must be number.";
+    public const string NationalCodeNotNumberMessage = "NationalCode must be number.";
     public const string NationalCodeAllDigitsEqualMessage = "NationalCode all digits cannot be equal.";
     public const string NationalCodeIsWrongMessage = "NationalCode is wrong.";
     public static void CheckNationalCode(string value)
@@ -69,5 +69,6 @@ public class IranNationalCode
 
     public override bool Equals(object obj) => obj is IranNationalCode code && Value == code.Value;
     public override int GetHashCode() => AsNumber.GetHashCode();
-    public override string ToString() => Formated;
+    public override string ToString() => GetFormated();
+    public string GetFormated(string seperator = "-") => $"{Value.Substring(0, 3)}{seperator}{Value.Substring(3, 6)}{seperator}{Value.Substring(9, 1)}";
 }

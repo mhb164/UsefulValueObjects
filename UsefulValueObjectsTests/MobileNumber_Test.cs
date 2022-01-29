@@ -4,29 +4,27 @@ using System;
 namespace UsefullValueObjectsTests
 {
     [TestClass]
-    public class IranNationalCode_Test
+    public class MobileNumber_Test
     {
         [TestMethod]
         public void Same_values_are_equal_even_if_different_references()
         {
-            var NationalCodeX = new IranNationalCode("7491254713");
-            var NationalCodeY = new IranNationalCode("7491254713");
-            var NationalCodeZ = new IranNationalCode(7491254713);
-            Assert.AreEqual(NationalCodeX, NationalCodeY);
-            Assert.AreEqual(NationalCodeX, NationalCodeZ);
+            var MobileNumberX = new MobileNumber("+989123456789");
+            var MobileNumberY = new MobileNumber("+989123456789");
+            Assert.AreEqual(MobileNumberX, MobileNumberY);
         }
 
         [TestMethod]
         public void Check_get_formated()
         {
-            Assert.AreEqual(new IranNationalCode("7491254713").GetFormated(), "749-125471-3");
-            Assert.AreEqual(new IranNationalCode("7491254713").GetFormated(" "), "749 125471 3");
+            Assert.AreEqual(new MobileNumber("+989123456789").GetFormated(), "+98-912-345-6789");
+            Assert.AreEqual(new MobileNumber("+989123456789").GetFormated(" "), "+98 912 345 6789");
         }
 
         [TestMethod]
         public void Check_as_number()
         {
-            Assert.AreEqual(new IranNationalCode("7491254713").AsNumber, 7491254713);
+            Assert.AreEqual(new MobileNumber("+989123456789").AsNumber, 989123456789);
         }
 
         [TestMethod]
@@ -34,11 +32,11 @@ namespace UsefullValueObjectsTests
         {
             try
             {
-                var inc = new IranNationalCode(null);
+                var inc = new MobileNumber(null);
             }
             catch (ArgumentNullException e)
             {
-                StringAssert.Contains(e.Message, IranNationalCode.NationalCodeIsNullMessage);
+                StringAssert.Contains(e.Message, MobileNumber.MobileNumberIsNullMessage);
                 return;
             }
             Assert.Fail("The expected exception was not thrown.");
@@ -47,7 +45,7 @@ namespace UsefullValueObjectsTests
         [TestMethod]
         public void Persian_input()
         {
-            new IranNationalCode("7491254713".ToPersian());
+            new MobileNumber("+989123456789".ToPersian());
         }
 
         [TestMethod]
@@ -55,26 +53,11 @@ namespace UsefullValueObjectsTests
         {
             try
             {
-                var inc = new IranNationalCode("");
+                var inc = new MobileNumber("");
             }
             catch (ApplicationException e)
             {
-                StringAssert.Contains(e.Message, IranNationalCode.NationalCodeIsEmptyMessage);
-                return;
-            }
-            Assert.Fail("The expected exception was not thrown.");
-        }
-
-        [TestMethod]
-        public void Length_error_input()
-        {
-            try
-            {
-                var inc = new IranNationalCode("12345");
-            }
-            catch (ApplicationException e)
-            {
-                StringAssert.Contains(e.Message, IranNationalCode.NationalCodeLengthErrorMessage);
+                StringAssert.Contains(e.Message, MobileNumber.MobileNumberIsEmptyMessage);
                 return;
             }
             Assert.Fail("The expected exception was not thrown.");
@@ -85,41 +68,57 @@ namespace UsefullValueObjectsTests
         {
             try
             {
-                var inc = new IranNationalCode("1a34567890");
+                var inc = new MobileNumber("+98912345678a");
             }
             catch (ApplicationException e)
             {
-                StringAssert.Contains(e.Message, IranNationalCode.NationalCodeNotNumberMessage);
+                StringAssert.Contains(e.Message, MobileNumber.MobileNumberNotNumberMessage);
                 return;
             }
             Assert.Fail("The expected exception was not thrown.");
         }
 
         [TestMethod]
-        public void All_digits_equal_input()
+        public void Not_start_with_plus_input()
         {
             try
             {
-                var inc = new IranNationalCode("1111111111");
+                var inc = new MobileNumber("09123456789");
             }
             catch (ApplicationException e)
             {
-                StringAssert.Contains(e.Message, IranNationalCode.NationalCodeAllDigitsEqualMessage);
+                StringAssert.Contains(e.Message, MobileNumber.MobileNumberNotStartWithPlusMessage);
                 return;
             }
             Assert.Fail("The expected exception was not thrown.");
         }
+
+        [TestMethod]
+        public void Not_implemented_input()
+        {
+            try
+            {
+                var inc = new MobileNumber("+19123456789");
+            }
+            catch (NotImplementedException e)
+            {
+                StringAssert.Contains(e.Message, MobileNumber.MobileNumberNotImplementedMessage);
+                return;
+            }
+            Assert.Fail("The expected exception was not thrown.");
+        }
+
 
         [TestMethod]
         public void Wrong_input()
         {
             try
             {
-                var inc = new IranNationalCode("7491254712");
+                var inc = new MobileNumber("+98912345678");
             }
             catch (ApplicationException e)
             {
-                StringAssert.Contains(e.Message, IranNationalCode.NationalCodeIsWrongMessage);
+                StringAssert.Contains(e.Message, MobileNumber.MobileNumberIsWrongMessage);
                 return;
             }
             Assert.Fail("The expected exception was not thrown.");
